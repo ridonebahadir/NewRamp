@@ -259,6 +259,7 @@ namespace UnityStandardAssets.Vehicles.Car
                 m_WheelColliders[i].GetGroundHit(out wheelhit);
                 if (wheelhit.normal == Vector3.zero)
                     return; // wheels arent on the ground so dont realign the rigidbody velocity
+
             }
 
             // this if is needed to avoid gimbal lock problems that will make the car suddenly shift direction

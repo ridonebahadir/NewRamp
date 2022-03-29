@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.Vehicles.Car;
 using DG.Tweening;
+using System;
+
 public class CarCollider : MonoBehaviour
 {
     public CarController carController;
     public Vector3 carRotate;
-    bool hit;
+    public bool hit;
+    public WheelCollider[] m_WheelColliders;
     private void Start()
     {
         carRotate = transform.eulerAngles;
@@ -16,11 +19,26 @@ public class CarCollider : MonoBehaviour
     {
         if (hit)
         {
-           transform.DORotate(carRotate, 0.5f)/*.SetEase(Ease.OutExpo)*/;
+           transform.DORotate(carRotate, 1f)/*.SetEase(Ease.OutExpo)*/;
         }
-
+        //WheelGround();
     }
 
+    private void WheelGround()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            WheelHit wheelhit;
+            m_WheelColliders[i].GetGroundHit(out wheelhit);
+            if (wheelhit.normal == Vector3.zero)
+                return; // wheels arent on the ground so dont realign the rigidbody velocity
+            else
+            {
+                Debug.Log("Ground Wheel");
+                Invoke("Late",0.5f);
+            }
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -44,9 +62,10 @@ public class CarCollider : MonoBehaviour
             hit = true;
             Invoke("Late",1f);
         }
+      
     }
 
-    private void Late()
+    public void Late()
     {
         hit = false;
     }
