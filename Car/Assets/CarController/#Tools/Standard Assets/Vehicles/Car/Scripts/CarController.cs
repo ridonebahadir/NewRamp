@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,7 +32,7 @@ namespace UnityStandardAssets.Vehicles.Car
         [SerializeField] private float m_FullTorqueOverAllWheels;
         [SerializeField] private float m_ReverseTorque;
         [SerializeField] private float m_MaxHandbrakeTorque;
-        [SerializeField] private float m_Downforce = 100f;
+        [SerializeField] public float m_Downforce = 100f;
         [SerializeField] private SpeedType m_SpeedType;
         [SerializeField] public float m_Topspeed = 200;
         [SerializeField] private static int NoOfGears = 5;
@@ -187,10 +188,11 @@ namespace UnityStandardAssets.Vehicles.Car
         }
 
 
+        float speed = 0;
         private void CapSpeed()
         {
            
-            float speed = m_Rigidbody.velocity.magnitude;
+            /* m_Rigidbody.velocity.magnitude*/;
             switch (m_SpeedType)
             {
                 case SpeedType.MPH:
@@ -201,7 +203,15 @@ namespace UnityStandardAssets.Vehicles.Car
                     break;
 
                 case SpeedType.KPH:
-                    speed *= 30.6f;
+
+
+
+
+                    DOTween.To(() => speed, x => speed = x, 50, 0.5f);
+                   
+
+                    speed *= 30;
+                   
                     if (speed > m_Topspeed)
                         m_Rigidbody.velocity = (m_Topspeed/3.6f) * m_Rigidbody.velocity.normalized;
                     break;
@@ -253,14 +263,15 @@ namespace UnityStandardAssets.Vehicles.Car
 
         private void SteerHelper()
         {
-            for (int i = 0; i < 4; i++)
-            {
-                WheelHit wheelhit;
-                m_WheelColliders[i].GetGroundHit(out wheelhit);
-                if (wheelhit.normal == Vector3.zero)
-                    return; // wheels arent on the ground so dont realign the rigidbody velocity
+            //for (int i = 0; i < 4; i++)
+            //{
+            //    WheelHit wheelhit;
+            //    m_WheelColliders[i].GetGroundHit(out wheelhit);
+            //    if (wheelhit.normal == Vector3.zero)
+            //        return; // wheels arent on the ground so dont realign the rigidbody velocity
 
-            }
+
+            //}
 
             // this if is needed to avoid gimbal lock problems that will make the car suddenly shift direction
             if (Mathf.Abs(m_OldRotation - transform.eulerAngles.y) < 10f)

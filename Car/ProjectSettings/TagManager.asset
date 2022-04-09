@@ -8,15 +8,20 @@ TagManager:
   - Obstacle
   - Hit
   - Plane
+  - FinalHit
+  - FinalHitAfter
+  - Collect
+  - Wall
+  - Ground
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - WheelCollider
   - Water
   - UI
-  - 
-  - 
+  - Rampa
+  - Ground
   - 
   - 
   - 

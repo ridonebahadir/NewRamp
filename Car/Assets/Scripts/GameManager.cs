@@ -8,7 +8,7 @@ namespace UnityStandardAssets.CrossPlatformInput {
 
     public class GameManager : MonoBehaviour
     {
-        public CarController carController;
+        
         public void ResetScene()
         {
             
@@ -16,10 +16,7 @@ namespace UnityStandardAssets.CrossPlatformInput {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             
         }
-        public void StartButton()
-        {
-            carController.m_Topspeed = 50;
-        }
+       
     }
 
 }
